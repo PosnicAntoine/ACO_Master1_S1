@@ -1,7 +1,7 @@
 /**
  * 
  */
-package receiver;
+package commands;
 
 /**
  * @author VinYarD
