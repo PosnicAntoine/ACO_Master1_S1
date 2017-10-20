@@ -1,11 +1,22 @@
 package client;
 
+
+import receiver.MoteurImpl;
+import commands.ConcreteColler;
+import commands.ConcreteCopier;
+import commands.ConcreteCouper;
+import commands.ConcreteInserer;
+import commands.ConcreteSelectionner;
 import invoker.IHM;
 
 public class Editor {
+
+	private static Editor e;
+	private static MoteurImpl m;
 	
 	public static void main(String[] args) {
-		new Editor();
+		e = new Editor();
+		m = new MoteurImpl();
 	}
 	
 	public Editor() {

@@ -12,7 +12,12 @@ public class ConcreteCouper implements Command {
 	
 	@Override
 	public void execute() {
-		m.coller();
+		try {
+			m.coller();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
