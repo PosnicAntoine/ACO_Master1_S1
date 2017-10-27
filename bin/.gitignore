@@ -1,4 +1,4 @@
-/client/
-/commands/
-/invoker/
 /receiver/
+/commands/
+/client/
+/invoker/

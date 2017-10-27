@@ -1,36 +1,43 @@
 package client;
 
 
+import invoker.IHM;
+import receiver.Moteur;
 import receiver.MoteurImpl;
+
 import commands.ConcreteColler;
 import commands.ConcreteCopier;
 import commands.ConcreteCouper;
 import commands.ConcreteInserer;
 import commands.ConcreteSelectionner;
-import invoker.IHM;
 
 public class Editor {
 
-	private static Editor e;
-	private static MoteurImpl m;
 	
 	public static void main(String[] args) {
-		e = new Editor();
-		m = new MoteurImpl();
+		new Editor();
 	}
 	
 	public Editor() {
+		Moteur m = new MoteurImpl();
 		IHM ihm = new IHM(System.in);
+		((MoteurImpl) m).addObserver(ihm);
 		//V1
-		ihm.addCommand("C", new ConcreteColler(m));
+		ihm.addCommand("V", new ConcreteColler(m));
 		ihm.addCommand("C", new ConcreteCopier(m));
-		ihm.addCommand("C", new ConcreteCouper(m));
-		ihm.addCommand("C", new ConcreteInserer(m));
-		ihm.addCommand("C", new ConcreteSelectionner(m));
+		ihm.addCommand("X", new ConcreteCouper(m));
+		ihm.addCommand("I", new ConcreteInserer(m, ihm));
+		ihm.addCommand("S", new ConcreteSelectionner(m, ihm));
+		
+		
+		
+		
 		
 		//V2
 		
 		//v3
+		
+		ihm.beginLoop();
 	}
 
 }

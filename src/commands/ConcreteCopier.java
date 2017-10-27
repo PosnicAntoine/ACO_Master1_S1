@@ -4,7 +4,7 @@ import receiver.Moteur;
 
 public class ConcreteCopier implements Command {
 
-	private Moteur m;
+	private final Moteur m;
 	
 	public ConcreteCopier(Moteur m) {
 		this.m = m;
@@ -12,12 +12,7 @@ public class ConcreteCopier implements Command {
 	
 	@Override
 	public void execute() {
-		try {
-			m.coller();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.m.copier();
 	}
 
 }

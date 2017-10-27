@@ -3,12 +3,12 @@ package receiver;
 public interface Moteur {
 	
 	//V1
-	public void copier() throws Exception;
-	public void couper() throws Exception;
-	public void coller() throws Exception;
+	public void copier();
+	public void couper();
+	public void coller();
 	
-	public void inserer(String s) throws Exception;
-	public void selectionner(int begin, int end) throws Exception;
+	public void inserer(String s);
+	public void selectionner(int begin, int end);
 
 	//V2
 	
