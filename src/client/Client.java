@@ -1,29 +1,29 @@
 package client;
 
 
-import Memento.CopyMemento;
-import Memento.CutMemento;
-import Memento.DeleteMemento;
-import Memento.Gardian;
-import Memento.InsertMemento;
-import Memento.PasteMemento;
 import commands.PlayBackCommand;
 import commands.SelectionCommand;
 import commands.StartRecordCommand;
 import commands.StopRecordCommand;
 import invoker.IHM;
 import invoker.Invoker;
+import memento.CopyMemento;
+import memento.CutMemento;
+import memento.DeleteMemento;
+import memento.Gardian;
+import memento.InsertMemento;
+import memento.PasteMemento;
 import receiver.Moteur;
 import receiver.MoteurImpl;
 
-public class Editor {
+public class Client {
 
 	
 	public static void main(String[] args) {
-		new Editor();
+		new Client();
 	}
 	
-	public Editor() {
+	public Client() {
 		Moteur engine = new MoteurImpl();
 		Invoker invoker = new IHM(System.in); // Typé IHM à cause de l'observer
 		((MoteurImpl) engine).addObserver((IHM) invoker);

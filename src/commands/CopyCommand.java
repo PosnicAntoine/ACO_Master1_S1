@@ -14,5 +14,4 @@ public class CopyCommand implements Command {
 	public void execute() {
 		this.m.copier();
 	}
-
 }

@@ -1,4 +1,4 @@
-package Memento;
+package memento;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -35,7 +35,7 @@ public class Gardian {
 	
 	public void playBack() {
 		for(CommandMementoable.Memento m : this.mementos) {
-			m.getCommand().play(m);
+			m.getSource().play(m);
 		}
 	}
 }

@@ -14,5 +14,4 @@ public class CutCommand implements Command {
 	public void execute() {
 		this.m.couper();
 	}
-
 }

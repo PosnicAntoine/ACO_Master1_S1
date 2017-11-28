@@ -20,7 +20,7 @@ public class MoteurImpl extends Observable implements Moteur  {
 	
 	@Override
 	public String getSelection(){
-		return this.selection.toString();
+		return this.text.substring(this.selection.begin, this.selection.end);
 	}	
 	
 	public MoteurImpl(){
@@ -130,6 +130,17 @@ public class MoteurImpl extends Observable implements Moteur  {
 		public String toString() {
 			return "\nSelection ["+begin+";"+end+"]";
 		}
+	}
+
+
+	@Override
+	public int getBeginSelection() {
+		return this.selection.begin;
+	}
+
+	@Override
+	public int getEndSelection() {
+		return this.selection.end;
 	}
 
 }

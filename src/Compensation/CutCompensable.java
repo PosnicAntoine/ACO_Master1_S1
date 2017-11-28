@@ -1,0 +1,61 @@
+package Compensation;
+
+import commands.CutCommand;
+import receiver.Moteur;
+
+public class CutCompensable extends CutCommand implements CompensableCommand {
+
+	private CompensableConversation conversation;
+	
+	public CutCompensable(Moteur m, CompensableConversation conversation) {
+		super(m);
+		this.conversation = conversation;
+	}
+	
+	@Override
+	public void execute() {
+		super.execute();
+		this.conversation.register(new CompensableCommand.Memento(this, new State(this.m.getBeginSelection(), this.m.getClipboard())));
+	}
+
+	@Override
+	public void compensate(CompensableCommand.Memento memento) {
+		State state = (CutCompensable.State) memento.getState();
+		this.m.selectionner(state.getBeginSelection(), state.getBeginSelection());
+		this.m.inserer(state.getClipboard());
+	}
+
+	@Override
+	public void execute(CompensableCommand.Memento memento) {
+		State state = (CutCompensable.State) memento.getState();
+		this.m.selectionner(state.beginSelection, state.getEndSelection());
+		this.m.delete();
+	}
+	
+	private class State {
+		
+		private int beginSelection;
+		private String clipboard;
+		
+		private State(int beginSelection, String clipboard) {
+			this.beginSelection = beginSelection;
+			this.clipboard = clipboard;
+		}
+		
+		private String getClipboard() {
+			return this.clipboard;
+		}
+		
+		private int getBeginSelection() {
+			return this.beginSelection;
+		}
+		
+		private int getEndSelection() {
+			return this.getBeginSelection() + this.getOffset();
+		}
+		
+		private int getOffset() {
+			return this.getClipboard().length();
+		}
+	}
+}

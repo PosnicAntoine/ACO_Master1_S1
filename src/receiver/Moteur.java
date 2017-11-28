@@ -4,6 +4,8 @@ public interface Moteur {
 	
 	public String getBuffer();
 	public String getSelection();
+	public int getBeginSelection();
+	public int getEndSelection();
 	public String getClipboard();
 	//V1
 	public void copier();
