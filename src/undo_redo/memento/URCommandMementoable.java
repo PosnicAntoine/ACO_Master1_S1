@@ -24,7 +24,7 @@ public interface URCommandMementoable extends Command {
 		private String before;
 		private String after;
 		
-		private State(String before, String after) {
+		State(String before, String after) {
 			this.before = before;
 			this.after = after;
 		}
