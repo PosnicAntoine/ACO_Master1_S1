@@ -2,11 +2,11 @@ package commands;
 
 import receiver.Moteur;
 
-public class ConcreteCopier implements Command {
+public class CopyCommand implements Command {
 
-	private final Moteur m;
+	protected final Moteur m;
 	
-	public ConcreteCopier(Moteur m) {
+	public CopyCommand(Moteur m) {
 		this.m = m;
 	}
 	

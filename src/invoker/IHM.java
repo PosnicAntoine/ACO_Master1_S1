@@ -22,6 +22,7 @@ public class IHM implements Invoker, Observer {
 		this.hmCommands = new HashMap<String, Command>();
 
 		this.reader = new BufferedReader(new InputStreamReader(is));
+		
 	}
 
 	public void beginLoop() {
@@ -81,7 +82,6 @@ public class IHM implements Invoker, Observer {
 		System.out.print("Prompt : ");
 		return this.reader.readLine();
 	}
-	
 	
 	@Override
 	public Dimension askSelection() throws IOException {

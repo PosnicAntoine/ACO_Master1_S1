@@ -8,16 +8,24 @@ public class MoteurImpl extends Observable implements Moteur  {
 	private Selection selection;
 	private String clipboard;
 	
-	public StringBuffer getText(){
-		return this.text;
+	@Override
+	public String getClipboard() {
+		return this.clipboard;
 	}
 	
-	public Selection getSelection(){
-		return this.selection;
+	@Override
+	public String getBuffer(){
+		return this.text.toString();
+	}
+	
+	@Override
+	public String getSelection(){
+		return this.selection.toString();
 	}	
 	
 	public MoteurImpl(){
 		this.text = new StringBuffer();
+		this.clipboard = "";
 		try {
 			this.selection = new Selection(0,0);
 		} catch (Exception e) {
@@ -32,47 +40,17 @@ public class MoteurImpl extends Observable implements Moteur  {
 	
 	@Override
 	public void copier() {
-		int begin = this.selection.begin;
-		int end = this.selection.end;
+		if(this.selection.isEmpty()) return;
 		
-		if(begin<end){
-			this.clipboard = this.text.substring(begin, end);
-		}
-		
-		this.setChanged();
-		this.notifyObservers();
+		this.clipboard = this.text.substring(this.selection.begin, this.selection.end);
 	}
 	
 	@Override
-	public void couper() {
-		int begin = this.selection.begin;
-		int end = this.selection.end;
-		
-		if(begin < end){
-			this.clipboard = this.text.substring(begin, end);
-			this.text = this.text.delete(begin, end);
-			
-			try {
-				this.selection.setAt(begin);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		this.setChanged();
-		this.notifyObservers();
-	}
-
-	@Override
-	public void coller() {
-		int begin = this.selection.begin;
-		int end = this.selection.end;
-		
-		this.text = this.text.delete(begin, end);
-		this.text = this.text.insert(begin, this.clipboard);
+	public void delete() {
+		this.text.delete(this.selection.begin, this.selection.end);
 		
 		try {
-			this.selection.setAt(begin + clipboard.length());
+			this.selection.setAt(this.selection.begin);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,15 +60,22 @@ public class MoteurImpl extends Observable implements Moteur  {
 	}
 	
 	@Override
-	public void inserer(String s) {
-		int begin = this.selection.begin;
-		int end = this.selection.end;
+	public void couper() {
+		this.copier();
+		this.delete();
+	}
 
-		this.text = this.text.delete(begin, end);
-		this.text = this.text.insert(begin, s);
-		
+	@Override
+	public void coller() {
+		this.inserer(this.clipboard);
+	}
+	
+	@Override
+	public void inserer(String s) {
+		this.delete();
+		this.text = this.text.insert(this.selection.begin, s);
 		try {
-			this.selection.setAt(begin + s.length());
+			this.selection.setAt(this.selection.begin + s.length());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -109,7 +94,6 @@ public class MoteurImpl extends Observable implements Moteur  {
 			e.printStackTrace();
 		}
 		
-		
 		this.setChanged();
 		this.notifyObservers();
 	}
@@ -127,6 +111,14 @@ public class MoteurImpl extends Observable implements Moteur  {
 			this.end = end;
 		}
 		
+		public boolean isEmpty() {
+			return this.size() == 0;
+		}
+		
+		public int size() {
+			return Math.subtractExact(this.begin, this.end);
+		}
+		
 		public void setAt(int i) throws Exception{
 			if(i < 0 || i > text.length()){
 				throw new Exception("IllegalArgumentSelection");
@@ -139,6 +131,5 @@ public class MoteurImpl extends Observable implements Moteur  {
 			return "\nSelection ["+begin+";"+end+"]";
 		}
 	}
-	
-	
+
 }

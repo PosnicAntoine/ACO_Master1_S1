@@ -5,12 +5,12 @@ import java.io.IOException;
 import invoker.Invoker;
 import receiver.Moteur;
 
-public class ConcreteInserer implements Command {
+public class InsertCommand implements Command {
 
-	private final Moteur m;
-	private final Invoker ui;
+	protected final Moteur m;
+	protected final Invoker ui;
 	
-	public ConcreteInserer(Moteur m, Invoker ui) {
+	public InsertCommand(Moteur m, Invoker ui) {
 		this.m = m;
 		this.ui = ui;
 	}
