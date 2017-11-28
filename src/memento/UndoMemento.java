@@ -1,7 +1,7 @@
 package memento;
 
-import Compensation.Conversation;
 import commands.RedoCommand;
+import undo_redo.Conversation;
 
 public class UndoMemento extends RedoCommand implements CommandMementoable {
 

@@ -1,6 +1,6 @@
 package commands;
 
-import Compensation.Conversation;
+import undo_redo.Conversation;
 
 public class RedoCommand implements Command {
 

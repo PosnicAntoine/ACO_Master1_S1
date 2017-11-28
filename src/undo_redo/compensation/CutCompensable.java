@@ -1,14 +1,15 @@
-package Compensation;
+package undo_redo.compensation;
 
-import commands.CutCommand;
+import memento.CutMemento;
+import memento.Gardian;
 import receiver.Moteur;
 
-public class CutCompensable extends CutCommand implements CompensableCommand {
+public class CutCompensable extends CutMemento implements CompensableCommand {
 
 	private CompensableConversation conversation;
 	
-	public CutCompensable(Moteur m, CompensableConversation conversation) {
-		super(m);
+	public CutCompensable(Moteur m, Gardian gardian, CompensableConversation conversation) {
+		super(m, gardian);
 		this.conversation = conversation;
 	}
 	

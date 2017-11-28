@@ -1,14 +1,15 @@
-package Compensation;
+package undo_redo.compensation;
 
-import commands.PasteCommand;
+import memento.Gardian;
+import memento.PasteMemento;
 import receiver.Moteur;
 
-public class PasteCompensable extends PasteCommand implements CompensableCommand {
+public class PasteCompensable extends PasteMemento implements CompensableCommand {
 
 	private CompensableConversation conversation;
 
-	public PasteCompensable(Moteur m, CompensableConversation conversation) {
-		super(m);
+	public PasteCompensable(Moteur m, Gardian gardian, CompensableConversation conversation) {
+		super(m, gardian);
 		this.conversation = conversation;
 	}
 
@@ -20,14 +21,14 @@ public class PasteCompensable extends PasteCommand implements CompensableCommand
 	}
 
 	@Override
-	public void compensate(Memento memento) {
+	public void compensate(CompensableCommand.Memento memento) {
 		State state = (PasteCompensable.State) memento.getState();
 		this.m.selectionner(state.getBeginSelection(), state.getEndSelection());
 		this.m.delete();
 	}
 
 	@Override
-	public void execute(Memento memento) {
+	public void execute(CompensableCommand.Memento memento) {
 		State state = (PasteCompensable.State) memento.getState();
 		this.m.selectionner(state.getBeginSelection(), state.getBeginSelection());
 		this.m.inserer(state.getClipboard());

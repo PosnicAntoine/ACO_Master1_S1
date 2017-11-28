@@ -88,7 +88,7 @@ public class IHM implements Invoker, Observer {
 		System.out.print("Begin selection :");
 		int begin = Integer.valueOf(this.reader.readLine());
 		
-		System.out.println("End selection :");
+		System.out.print("End selection :");
 		int end = Integer.valueOf(this.reader.readLine());
 		
 		return new Dimension(begin, end); 

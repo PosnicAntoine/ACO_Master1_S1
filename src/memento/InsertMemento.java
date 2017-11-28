@@ -1,7 +1,5 @@
 package memento;
 
-import java.io.IOException;
-
 import commands.InsertCommand;
 import invoker.Invoker;
 import receiver.Moteur;

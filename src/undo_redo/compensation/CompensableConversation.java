@@ -1,4 +1,6 @@
-package Compensation;
+package undo_redo.compensation;
+
+import undo_redo.AbstractConversation;
 
 public class CompensableConversation extends AbstractConversation<CompensableCommand.Memento, CompensableCommand, Object> {
 
@@ -18,6 +20,6 @@ public class CompensableConversation extends AbstractConversation<CompensableCom
 		if(this.redos.isEmpty()) return;
 		CompensableCommand.Memento c = this.redos.pop();
 		c.getSource().execute(c);
-		this.redos.push(c);
+		this.undos.push(c);
 	}
 }

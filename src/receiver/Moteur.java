@@ -7,6 +7,7 @@ public interface Moteur {
 	public int getBeginSelection();
 	public int getEndSelection();
 	public String getClipboard();
+	public void setBuffer(String buffer);
 	//V1
 	public void copier();
 	public void couper();

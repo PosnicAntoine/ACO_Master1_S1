@@ -1,14 +1,15 @@
-package Compensation;
+package undo_redo.compensation;
 
-import commands.DeleteCommand;
+import memento.DeleteMemento;
+import memento.Gardian;
 import receiver.Moteur;
 
-public class DeleteCompensable extends DeleteCommand implements CompensableCommand {
+public class DeleteCompensable extends DeleteMemento implements CompensableCommand {
 
 	private CompensableConversation conversation;
 	
-	public DeleteCompensable(Moteur m, CompensableConversation conversation) {
-		super(m);
+	public DeleteCompensable(Moteur m, Gardian gardian, CompensableConversation conversation) {
+		super(m, gardian);
 		this.conversation = conversation;
 	}
 	

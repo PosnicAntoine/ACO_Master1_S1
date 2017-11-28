@@ -2,3 +2,6 @@
 /Compensation/
 /commands/
 /receiver/
+/client/
+/invoker/
+/undo_redo/

@@ -1,20 +1,23 @@
 package client;
 
 
-import commands.PlayBackCommand;
+import commands.RedoCommand;
 import commands.SelectionCommand;
 import commands.StartRecordCommand;
 import commands.StopRecordCommand;
+import commands.UndoCommand;
 import invoker.IHM;
 import invoker.Invoker;
 import memento.CopyMemento;
-import memento.CutMemento;
-import memento.DeleteMemento;
 import memento.Gardian;
-import memento.InsertMemento;
-import memento.PasteMemento;
 import receiver.Moteur;
 import receiver.MoteurImpl;
+import undo_redo.compensation.CompensableConversation;
+import undo_redo.compensation.CutCompensable;
+import undo_redo.compensation.DeleteCompensable;
+import undo_redo.compensation.InsertCompensable;
+import undo_redo.compensation.PasteCompensable;
+import undo_redo.compensation.PlayBackCompensable;
 
 public class Client {
 
@@ -36,19 +39,34 @@ public class Client {
 //		ihm.addCommand("D", new DeleteCommand(m));
 		
 		//V2
+//		Gardian gardian = new Gardian();
+//		invoker.addCommand("V", new PasteMemento(engine, gardian));
+//		invoker.addCommand("C", new CopyMemento(engine, gardian));
+//		invoker.addCommand("X", new CutMemento(engine, gardian));
+//		invoker.addCommand("I", new InsertMemento(engine, invoker, gardian));
+//		invoker.addCommand("S", new SelectionCommand(engine, invoker));
+//		invoker.addCommand("D", new DeleteMemento(engine, gardian));
+//		
+//		invoker.addCommand("R", new StartRecordCommand(gardian));
+//		invoker.addCommand("Q", new StopRecordCommand(gardian));
+//		invoker.addCommand("P", new PlayBackCommand(gardian));
+		
+		//v3
+		CompensableConversation conversation = new CompensableConversation();
 		Gardian gardian = new Gardian();
-		invoker.addCommand("V", new PasteMemento(engine, gardian));
-		invoker.addCommand("C", new CopyMemento(engine, gardian));
-		invoker.addCommand("X", new CutMemento(engine, gardian));
-		invoker.addCommand("I", new InsertMemento(engine, invoker, gardian));
+		invoker.addCommand("V", new PasteCompensable(engine, gardian, conversation));
+		invoker.addCommand("C", new CopyMemento(engine, gardian)); // nothing to undo or redo here
+		invoker.addCommand("X", new CutCompensable(engine, gardian, conversation));
+		invoker.addCommand("I", new InsertCompensable(engine, invoker, gardian, conversation));
 		invoker.addCommand("S", new SelectionCommand(engine, invoker));
-		invoker.addCommand("D", new DeleteMemento(engine, gardian));
+		invoker.addCommand("D", new DeleteCompensable(engine, gardian, conversation));
 		
 		invoker.addCommand("R", new StartRecordCommand(gardian));
 		invoker.addCommand("Q", new StopRecordCommand(gardian));
-		invoker.addCommand("P", new PlayBackCommand(gardian));
+		invoker.addCommand("P", new PlayBackCompensable(gardian, engine, conversation));
 		
-		//v3
+		invoker.addCommand("Z", new UndoCommand(conversation));
+		invoker.addCommand("Y", new RedoCommand(conversation));
 		
 		((IHM) invoker).beginLoop();
 	}

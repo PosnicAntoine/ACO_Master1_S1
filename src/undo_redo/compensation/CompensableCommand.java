@@ -1,4 +1,4 @@
-package Compensation;
+package undo_redo.compensation;
 
 import commands.Command;
 import memento.AbstractMemento;

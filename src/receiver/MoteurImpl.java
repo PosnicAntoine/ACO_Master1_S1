@@ -34,8 +34,16 @@ public class MoteurImpl extends Observable implements Moteur  {
 	}
 	
 	@Override
+	public void setBuffer(String buffer) {
+		this.text.replace(0, this.text.length(), buffer);
+		
+//		this.setChanged();
+//		this.notifyObservers();
+	}
+	
+	@Override
 	public void notifyObservers() {
-		this.notifyObservers(this.text + this.selection.toString());
+		this.notifyObservers(this.text + this.selection.toString() + " ; Clipboard [" + this.clipboard + "]");
 	}
 	
 	@Override
@@ -43,6 +51,8 @@ public class MoteurImpl extends Observable implements Moteur  {
 		if(this.selection.isEmpty()) return;
 		
 		this.clipboard = this.text.substring(this.selection.begin, this.selection.end);
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	@Override
@@ -54,7 +64,6 @@ public class MoteurImpl extends Observable implements Moteur  {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		this.setChanged();
 		this.notifyObservers();
 	}
@@ -72,8 +81,7 @@ public class MoteurImpl extends Observable implements Moteur  {
 	
 	@Override
 	public void inserer(String s) {
-		this.delete();
-		this.text = this.text.insert(this.selection.begin, s);
+		this.text = this.text.replace(this.selection.begin, this.selection.end, s);
 		try {
 			this.selection.setAt(this.selection.begin + s.length());
 		} catch (Exception e) {
@@ -94,8 +102,8 @@ public class MoteurImpl extends Observable implements Moteur  {
 			e.printStackTrace();
 		}
 		
-		this.setChanged();
-		this.notifyObservers();
+//		this.setChanged();
+//		this.notifyObservers();
 	}
 	
 	
