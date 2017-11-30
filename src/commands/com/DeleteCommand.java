@@ -1,5 +1,6 @@
-package commands;
+package commands.com;
 
+import commands.Command;
 import receiver.Moteur;
 
 public class DeleteCommand implements Command {
@@ -12,6 +13,9 @@ public class DeleteCommand implements Command {
 
 	@Override
 	public void execute() {
+		if(this.m.getSelection().isEmpty()) {
+			this.m.moveDot(Math.max(this.m.getDot() - 1, 0));
+		}
 		this.m.delete();
 	}
 }

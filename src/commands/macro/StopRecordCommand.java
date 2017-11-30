@@ -1,5 +1,6 @@
-package commands;
+package commands.macro;
 
+import commands.Command;
 import memento.Gardian;
 
 public class StopRecordCommand implements Command {
@@ -13,8 +14,7 @@ public class StopRecordCommand implements Command {
 	@Override
 	public void execute() {
 		if (!this.gardian.isRecording()) {
-			System.err.println("There is no macro to stop ...");
-			return;
+			throw new RuntimeException("There is no macro to stop ...");
 		}
 		this.gardian.stopRecord();
 	}

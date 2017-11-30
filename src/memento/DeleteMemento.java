@@ -1,6 +1,6 @@
 package memento;
 
-import commands.DeleteCommand;
+import commands.com.DeleteCommand;
 import receiver.Moteur;
 
 public class DeleteMemento extends DeleteCommand implements CommandMementoable {
@@ -20,7 +20,6 @@ public class DeleteMemento extends DeleteCommand implements CommandMementoable {
 
 	@Override
 	public void play(CommandMementoable.Memento memento) {
-		// nothing to restore ...
 		super.execute();
 	}
 }

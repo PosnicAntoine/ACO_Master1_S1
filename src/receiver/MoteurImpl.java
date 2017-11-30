@@ -2,74 +2,70 @@ package receiver;
 
 import java.util.Observable;
 
-public class MoteurImpl extends Observable implements Moteur  {
-	
+@SuppressWarnings("deprecation")
+public class MoteurImpl extends Observable implements Moteur {
+
 	private StringBuffer text;
-	private Selection selection;
 	private String clipboard;
-	
+	private Caret caret;
+
 	@Override
 	public String getClipboard() {
 		return this.clipboard;
 	}
-	
+
 	@Override
-	public String getBuffer(){
+	public String getBuffer() {
 		return this.text.toString();
 	}
-	
+
 	@Override
-	public String getSelection(){
-		return this.text.substring(this.selection.begin, this.selection.end);
-	}	
-	
-	public MoteurImpl(){
+	public String getSelection() {
+		return this.text.substring(this.caret.begin(), this.caret.end());
+	}
+
+	public MoteurImpl() {
 		this.text = new StringBuffer();
 		this.clipboard = "";
-		try {
-			this.selection = new Selection(0,0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.caret = new Caret(0);
 	}
-	
+
 	@Override
 	public void setBuffer(String buffer) {
 		this.text.replace(0, this.text.length(), buffer);
-		
-//		this.setChanged();
-//		this.notifyObservers();
+
+		// this.setChanged();
+		// this.notifyObservers();
 	}
-	
+
 	@Override
 	public void notifyObservers() {
-		this.notifyObservers(this.text + this.selection.toString() + " ; Clipboard [" + this.clipboard + "]");
+		this.notifyObservers(this.text + this.caret.toString() + " ; Clipboard [" + this.clipboard + "]");
 	}
-	
+
 	@Override
 	public void copier() {
-		if(this.selection.isEmpty()) return;
-		
-		this.clipboard = this.text.substring(this.selection.begin, this.selection.end);
+		if (this.caret.isEmpty())
+			return;
+
+		this.clipboard = this.text.substring(this.caret.begin(), this.caret.end());
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
+
 	@Override
 	public void delete() {
-		this.text.delete(this.selection.begin, this.selection.end);
+		this.text.delete(this.caret.begin(), this.caret.end());
+
+		this.caret.setDot(this.caret.begin());
 		
-		try {
-			this.selection.setAt(this.selection.begin);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
+
 	@Override
 	public void couper() {
+		if(this.getSelection().isEmpty()) return;
 		this.copier();
 		this.delete();
 	}
@@ -78,77 +74,69 @@ public class MoteurImpl extends Observable implements Moteur  {
 	public void coller() {
 		this.inserer(this.clipboard);
 	}
-	
+
 	@Override
 	public void inserer(String s) {
-		this.text = this.text.replace(this.selection.begin, this.selection.end, s);
-		try {
-			this.selection.setAt(this.selection.begin + s.length());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.text = this.text.replace(this.caret.begin(), this.caret.end(), s);
 		
+		this.caret.setDot(this.caret.begin() + s.length());
+
 		this.setChanged();
 		this.notifyObservers();
 	}
 	
+	@Override
+	public int getDot() {
+		return this.caret.dot;
+	}
 
 	@Override
-	public void selectionner(int begin, int end) {
-		
-		try {
-			this.selection = new Selection(begin, end);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-//		this.setChanged();
-//		this.notifyObservers();
+	public int getMark() {
+		return this.caret.mark;
 	}
-	
-	
-	private class Selection {
-		public int begin;
-		public int end;
-		
-		public Selection(final int begin, final int end) throws Exception {
-			if(begin < 0 || begin > end || end > text.length()){
-				throw new Exception("IllegalArgumentSelection");
-			}
-			this.begin = begin;
-			this.end = end;
+
+	@Override
+	public Moteur setDot(int dot) {
+		this.caret.setDot(dot);
+		return this;
+	}
+
+	@Override
+	public void moveDot(int dot) {
+		this.caret.moveDot(dot); 
+	}
+
+	private class Caret {
+		public int dot;
+		public int mark;
+
+		public Caret(int dot) {
+			this.setDot(dot);
 		}
 		
+		public int begin() {
+			return Math.min(this.dot, this.mark);
+		}
+		
+		public int end() {
+			return Math.max(this.dot, this.mark);
+		}
+
 		public boolean isEmpty() {
-			return this.size() == 0;
+			return this.dot == this.mark;
+		}
+
+		public void setDot(int dot) {
+			this.dot = dot;
+			this.mark = dot;
 		}
 		
-		public int size() {
-			return Math.subtractExact(this.begin, this.end);
+		public void moveDot(int dot) {
+			this.dot = dot;
 		}
-		
-		public void setAt(int i) throws Exception{
-			if(i < 0 || i > text.length()){
-				throw new Exception("IllegalArgumentSelection");
-			}
-			this.begin = i;
-			this.end = i;
-		}
-		
+
 		public String toString() {
-			return "\nSelection ["+begin+";"+end+"]";
+			return "\nSelection [" + this.dot + ";" + this.mark + "]";
 		}
 	}
-
-
-	@Override
-	public int getBeginSelection() {
-		return this.selection.begin;
-	}
-
-	@Override
-	public int getEndSelection() {
-		return this.selection.end;
-	}
-
 }

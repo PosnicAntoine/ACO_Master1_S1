@@ -1,5 +1,6 @@
-package commands;
+package commands.macro;
 
+import commands.Command;
 import memento.Gardian;
 
 public class StartRecordCommand implements Command {
@@ -13,8 +14,7 @@ public class StartRecordCommand implements Command {
 	@Override
 	public void execute() {
 		if(this.gardian.isRecording()) {
-			System.err.println("A macro is already recording ...");
-			return;
+			throw new RuntimeException("A macro is already recording ...");
 		}
  		this.gardian.startRecord();
 	}

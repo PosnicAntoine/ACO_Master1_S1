@@ -1,5 +1,6 @@
-package commands;
+package commands.macro;
 
+import commands.Command;
 import memento.Gardian;
 
 public class PlayBackCommand implements Command {
@@ -13,13 +14,11 @@ public class PlayBackCommand implements Command {
 	@Override
 	public void execute() {
 		if (this.gardian.isRecording()) {
-			System.err.println("A macro is already recording ...");
-			return;
+			throw new RuntimeException("A macro is already recording ...");
 		}
 		
 		if(this.gardian.isEmpty()) {
-			System.err.println("There is no macro recorded yet ...");
-			return;
+			throw new RuntimeException("There is no macro recorded yet ...");
 		}
 		
 		this.gardian.playBack();

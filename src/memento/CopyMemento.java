@@ -1,6 +1,6 @@
 package memento;
 
-import commands.CopyCommand;
+import commands.com.CopyCommand;
 import receiver.Moteur;
 
 public class CopyMemento extends CopyCommand implements CommandMementoable {

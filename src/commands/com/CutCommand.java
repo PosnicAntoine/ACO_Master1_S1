@@ -1,5 +1,6 @@
-package commands;
+package commands.com;
 
+import commands.Command;
 import receiver.Moteur;
 
 public class CutCommand implements Command {

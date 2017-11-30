@@ -1,7 +1,7 @@
-/memento/
-/Compensation/
-/commands/
+/tests/
 /receiver/
 /client/
+/commands/
 /invoker/
 /undo_redo/
+/memento/

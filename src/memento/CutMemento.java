@@ -1,6 +1,6 @@
 package memento;
 
-import commands.CutCommand;
+import commands.com.CutCommand;
 import receiver.Moteur;
 
 public class CutMemento extends CutCommand implements CommandMementoable {

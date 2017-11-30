@@ -1,10 +1,7 @@
-package commands;
+package commands.selection;
 
+import commands.Command;
 import invoker.Invoker;
-
-import java.awt.Dimension;
-import java.io.IOException;
-
 import receiver.Moteur;
 
 public class SelectionCommand implements Command {
@@ -17,14 +14,14 @@ public class SelectionCommand implements Command {
 		this.ui = ui;
 	}
 
-	@Override
-	public void execute() {
-		try {
-			Dimension d = this.ui.askSelection();
-			this.m.selectionner(d.width, d.height);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void execute(int cursor) {
+		cursor = Math.max(cursor, 0);
+		cursor = Math.min(cursor, this.m.getBuffer().length());
+		this.m.moveDot(cursor);
 	}
 
+	@Override
+	public void execute() {
+		this.execute(this.ui.askValue());
+	}
 }

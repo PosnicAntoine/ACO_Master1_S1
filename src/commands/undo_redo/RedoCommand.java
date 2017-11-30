@@ -1,5 +1,6 @@
-package commands;
+package commands.undo_redo;
 
+import commands.Command;
 import undo_redo.Conversation;
 
 public class RedoCommand implements Command {

@@ -1,6 +1,5 @@
 package invoker;
 
-import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +10,7 @@ import java.util.Observer;
 
 import commands.Command;
 
+@SuppressWarnings("deprecation")
 public class IHM implements Invoker, Observer {
 
 	private HashMap<String, Command> hmCommands;
@@ -22,7 +22,6 @@ public class IHM implements Invoker, Observer {
 		this.hmCommands = new HashMap<String, Command>();
 
 		this.reader = new BufferedReader(new InputStreamReader(is));
-		
 	}
 
 	public void beginLoop() {
@@ -46,9 +45,7 @@ public class IHM implements Invoker, Observer {
 			
 			System.out.print("Enter command ("+listCmd+") > ");
 
-			
 			String line = this.reader.readLine();
-
 			
 			Command c = this.hmCommands.get(line.toUpperCase());
 
@@ -78,20 +75,23 @@ public class IHM implements Invoker, Observer {
 	}
 
 	@Override
-	public String askInsertion() throws IOException {
+	public String askInsertion() {
 		System.out.print("Prompt : ");
-		return this.reader.readLine();
+		try {
+			return this.reader.readLine();
+		} catch (IOException e) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 	@Override
-	public Dimension askSelection() throws IOException {
-		System.out.print("Begin selection :");
-		int begin = Integer.valueOf(this.reader.readLine());
-		
-		System.out.print("End selection :");
-		int end = Integer.valueOf(this.reader.readLine());
-		
-		return new Dimension(begin, end); 
+	public int askValue() {
+		System.out.print("prompt >");
+		try {
+			return Integer.valueOf(this.reader.readLine());
+		} catch (NumberFormatException | IOException e) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 }

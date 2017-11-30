@@ -13,6 +13,7 @@ public class Gardian {
 	}
 	
 	public void startRecord() {
+		this.mementos.clear();
 		this.record = true;
 	}
 	

@@ -1,6 +1,6 @@
 package memento;
 
-import commands.PasteCommand;
+import commands.com.PasteCommand;
 import receiver.Moteur;
 
 public class PasteMemento extends PasteCommand implements CommandMementoable {

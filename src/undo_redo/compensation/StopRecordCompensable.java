@@ -1,6 +1,6 @@
 package undo_redo.compensation;
 
-import commands.StartRecordCommand;
+import commands.macro.StartRecordCommand;
 import memento.Gardian;
 
 public class StopRecordCompensable extends StartRecordCommand implements CompensableCommand {
