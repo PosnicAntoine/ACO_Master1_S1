@@ -12,51 +12,53 @@ public class CutCompensable extends CutMemento implements CompensableCommand {
 		super(m, gardian);
 		this.conversation = conversation;
 	}
-	
+
 	@Override
 	public void execute() {
+		State state = new State(this.m.getDot(), this.m.getMark(), this.m.getSelection());
 		super.execute();
-		this.conversation.register(new CompensableCommand.Memento(this, new State(this.m.getBeginSelection(), this.m.getClipboard())));
+		this.conversation.register(new CompensableCommand.Memento(this, state));
 	}
 
 	@Override
 	public void compensate(CompensableCommand.Memento memento) {
 		State state = (CutCompensable.State) memento.getState();
-		this.m.selectionner(state.getBeginSelection(), state.getBeginSelection());
-		this.m.inserer(state.getClipboard());
+		this.m.setDot(state.begin());
+		this.m.inserer(state.getSelection());
 	}
 
 	@Override
 	public void execute(CompensableCommand.Memento memento) {
 		State state = (CutCompensable.State) memento.getState();
-		this.m.selectionner(state.beginSelection, state.getEndSelection());
+		this.m.setDot(state.getMark()).moveDot(state.getDot());
 		this.m.delete();
 	}
 	
 	private class State {
 		
-		private int beginSelection;
-		private String clipboard;
+		private int dot, mark;
+		private String selection;
 		
-		private State(int beginSelection, String clipboard) {
-			this.beginSelection = beginSelection;
-			this.clipboard = clipboard;
+		private State(int dot, int mark, String selection) {
+			this.dot = dot;
+			this.mark = mark;
+			this.selection = selection;
 		}
 		
-		private String getClipboard() {
-			return this.clipboard;
+		private int getDot() {
+			return this.dot;
 		}
 		
-		private int getBeginSelection() {
-			return this.beginSelection;
+		private int getMark() {
+			return this.mark;
 		}
 		
-		private int getEndSelection() {
-			return this.getBeginSelection() + this.getOffset();
+		private int begin() {
+			return Math.min(this.getDot(), this.getMark());
 		}
 		
-		private int getOffset() {
-			return this.getClipboard().length();
+		private String getSelection() {
+			return this.selection;
 		}
 	}
 }

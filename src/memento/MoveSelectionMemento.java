@@ -1,9 +1,7 @@
 package memento;
 
-import commands.selection.MoveCursorCommand;
 import commands.selection.MoveSelectionCommand;
 import invoker.Invoker;
-import memento.CommandMementoable.Memento;
 import receiver.Moteur;
 
 public class MoveSelectionMemento extends MoveSelectionCommand implements CommandMementoable {

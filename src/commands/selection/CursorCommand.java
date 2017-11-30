@@ -22,6 +22,10 @@ public class CursorCommand implements Command {
 
 	@Override
 	public void execute() {
-		this.execute(this.ui.askValue());
+		try {
+			this.execute(this.ui.askValue());
+		} catch (Exception e) {
+			
+		}
 	}
 }

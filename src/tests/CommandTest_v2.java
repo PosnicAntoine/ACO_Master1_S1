@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import commands.macro.PlayBackCommand;
 import commands.macro.StartRecordCommand;
 import commands.macro.StopRecordCommand;
+import memento.CommandMementoable.Memento;
 import memento.CopyMemento;
 import memento.CursorMemento;
 import memento.CutMemento;
@@ -325,6 +326,8 @@ class CommandTest_v2 {
 		this.play.execute();
 		assertTrue(this.engine.getBuffer().isEmpty());
 		assertTrue(this.engine.getBuffer().isEmpty());
+		
+//		assertThrows(IllegalArgumentException.class, () -> {this.insert.play(new Memento(this.insert, 18)); });
 	}
 	
 	/**

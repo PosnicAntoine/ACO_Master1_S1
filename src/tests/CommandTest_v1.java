@@ -6,7 +6,6 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -107,13 +106,13 @@ class CommandTest_v1 {
 		 */
 		String s = "";
 		s.substring(0, 0);
-		assertThrows(RuntimeException.class, () -> { this.cursor.execute(); });
+		this.cursor.execute();
 		assertEquals(this.engine.getDot(), 0);
 		assertTrue(this.engine.getSelection().isEmpty());
 		this.cursor.execute(buf.length());
 		assertEquals(this.engine.getDot(), buf.length());
 		assertTrue(this.engine.getSelection().isEmpty());
-		assertThrows(RuntimeException.class, () -> { this.cursor.execute(); });
+		this.cursor.execute();
 		assertEquals(this.engine.getDot(), buf.length());
 		assertTrue(this.engine.getSelection().isEmpty());
 
@@ -215,7 +214,7 @@ class CommandTest_v1 {
 		this.cursor.execute(0);
 		assertEquals(this.engine.getDot(), 0);
 		
-		assertThrows(RuntimeException.class, () -> { this.moveCursor.execute(); });
+		this.moveCursor.execute();
 		
 		assertEquals(this.engine.getDot(), 0);
 	}
@@ -428,7 +427,7 @@ class CommandTest_v1 {
 			
 			assertEquals(this.engine.getSelection(), buf1);
 			
-			assertThrows(RuntimeException.class, () -> { this.selection.execute(); });
+			this.selection.execute();
 			
 			assertEquals(this.engine.getSelection(), buf1);
 		}
@@ -450,7 +449,7 @@ class CommandTest_v1 {
 			
 			this.selectAll.execute();
 			
-			assertThrows(RuntimeException.class, () -> { this.insert.execute(); });
+			this.insert.execute();
 			
 			assertEquals(this.engine.getBuffer(), buf2 + buf3);
 			
@@ -458,6 +457,8 @@ class CommandTest_v1 {
 			
 			assertTrue(this.engine.getBuffer().isEmpty());
 			
+			
+			this.insert.execute();
 		}
 	}
 

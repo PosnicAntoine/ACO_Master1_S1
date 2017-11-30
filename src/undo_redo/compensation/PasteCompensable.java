@@ -15,49 +15,55 @@ public class PasteCompensable extends PasteMemento implements CompensableCommand
 
 	@Override
 	public void execute() {
+		State state = new State(this.m.getDot(), this.m.getMark(), this.m.getClipboard(), this.m.getSelection());
 		super.execute();
-		this.conversation.register(
-				new CompensableCommand.Memento(this, new State(this.m.getBeginSelection(), this.m.getClipboard()))); // TODO
+		this.conversation.register(new CompensableCommand.Memento(this, state));
 	}
 
 	@Override
 	public void compensate(CompensableCommand.Memento memento) {
 		State state = (PasteCompensable.State) memento.getState();
-		this.m.selectionner(state.getBeginSelection(), state.getEndSelection());
-		this.m.delete();
+		this.m.setDot(state.begin()).moveDot(state.begin() + state.getClipboard().length());
+		this.m.inserer(state.getSelection());
 	}
 
 	@Override
 	public void execute(CompensableCommand.Memento memento) {
 		State state = (PasteCompensable.State) memento.getState();
-		this.m.selectionner(state.getBeginSelection(), state.getBeginSelection());
+		this.m.setDot(state.begin());
 		this.m.inserer(state.getClipboard());
 	}
 
 	private class State {
 
-		private int endSelection;
-		private String clipboard;
+		private int dot, mark;
+		private String clipboard, selection;
 
-		private State(int endSelection, String clipboard) {
-			this.endSelection = endSelection;
+		private State(int dot, int mark, String clipboard, String selection) {
+			this.dot = dot;
+			this.mark = mark;
 			this.clipboard = clipboard;
+			this.selection = selection;
+		}
+
+		private int getDot() {
+			return this.dot;
+		}
+
+		private int getMark() {
+			return this.mark;
+		}
+
+		private int begin() {
+			return Math.min(this.getDot(), this.getMark());
 		}
 
 		private String getClipboard() {
 			return this.clipboard;
 		}
 
-		private int getBeginSelection() {
-			return this.getEndSelection() - this.getOffset();
-		}
-
-		private int getEndSelection() {
-			return this.endSelection;
-		}
-
-		private int getOffset() {
-			return this.getClipboard().length();
+		private String getSelection() {
+			return this.selection;
 		}
 	}
 }

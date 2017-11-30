@@ -11,6 +11,7 @@ public class MoveCursorCommand implements Command {
 
 	public MoveCursorCommand(Moteur m, Invoker invoker) {
 		this.m = m;
+		this.invoker = invoker;
 	}
 
 	public void execute(int move) {
@@ -22,6 +23,9 @@ public class MoveCursorCommand implements Command {
 
 	@Override
 	public void execute() {
-		this.execute(this.invoker.askValue());
+		try {
+			this.execute(this.invoker.askValue());
+		} catch (Exception e) {
+		}
 	}
 }

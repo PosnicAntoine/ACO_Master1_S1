@@ -32,10 +32,6 @@ public class InsertMemento extends InsertCommand implements CommandMementoable {
 	
 	@Override
 	public void play(CommandMementoable.Memento memento) {
-		if (!(memento.getState() instanceof String)) {
-			throw new IllegalArgumentException("State of InsertCommand must be of type String");
-		}
-
 		super.execute((String) memento.getState());
 	}
 }

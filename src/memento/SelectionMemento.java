@@ -12,7 +12,7 @@ public class SelectionMemento extends SelectionCommand implements CommandMemento
 		super(m, ui);
 		this.gardian = gardian;
 	}
-	
+	 
 	@Override
 	public void execute(int dot) {
 		super.execute(dot);

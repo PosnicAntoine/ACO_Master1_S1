@@ -8,7 +8,7 @@ public class CompensableConversation extends AbstractConversation<CompensableCom
 		this.undos.push(memento);
 		this.redos.clear();
 	}
-
+	
 	public void undo() {
 		if(this.undos.isEmpty()) return;
 		CompensableCommand.Memento c = this.undos.pop();

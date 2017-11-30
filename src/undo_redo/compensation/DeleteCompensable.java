@@ -7,57 +7,65 @@ import receiver.Moteur;
 public class DeleteCompensable extends DeleteMemento implements CompensableCommand {
 
 	private CompensableConversation conversation;
-	
+
 	public DeleteCompensable(Moteur m, Gardian gardian, CompensableConversation conversation) {
 		super(m, gardian);
 		this.conversation = conversation;
 	}
-	
+
 	@Override
 	public void execute() {
-		this.conversation.register(new CompensableCommand.Memento(this, new State(this.m.getBeginSelection(), this.m.getSelection()))); // TODO
+		if(this.m.getSelection().isEmpty()) {
+			this.m.moveDot(Math.max(this.m.getDot() - 1, 0));
+		}
+		State state = new State(this.m.getDot(), this.m.getMark(), this.m.getSelection());
 		super.execute();
+		this.conversation.register(new CompensableCommand.Memento(this, state));
 	}
 
 	@Override
 	public void compensate(CompensableCommand.Memento memento) {
 		State state = (DeleteCompensable.State) memento.getState();
-		this.m.selectionner(state.getBeginSelection(), state.getBeginSelection());
+		this.m.setDot(state.begin());
 		this.m.inserer(state.getSelection());
 	}
 
 	@Override
 	public void execute(CompensableCommand.Memento memento) {
 		State state = (DeleteCompensable.State) memento.getState();
-		this.m.selectionner(state.getBeginSelection(), state.getEndSelection());
+		this.m.setDot(state.begin()).moveDot(state.end());
 		this.m.delete();
 	}
-	
+
 	private class State {
 
-		private int beginSelection;
+		private int dot, mark;
 		private String selection;
 
-		private State(int beginSelection, String selection) {
-			this.beginSelection = beginSelection;
+		private State(int dot, int mark, String selection) {
+			this.dot = dot;
+			this.mark = mark;
 			this.selection = selection;
+		}
+
+		private int getDot() {
+			return this.dot;
+		}
+
+		private int getMark() {
+			return this.mark;
+		}
+		
+		private int begin() {
+			return Math.min(this.getDot(), this.getMark());
+		}
+
+		private int end() {
+			return Math.max(this.getDot(), this.getMark());
 		}
 
 		private String getSelection() {
 			return this.selection;
 		}
-
-		private int getBeginSelection() {
-			return this.beginSelection;
-		}
-
-		private int getEndSelection() {
-			return this.getBeginSelection() + this.getOffset();
-		}
-
-		private int getOffset() {
-			return this.getSelection().length();
-		}
 	}
-
 }

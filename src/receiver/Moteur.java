@@ -15,7 +15,7 @@ public interface Moteur {
 	
 	public Moteur setDot(int dot);
 	public void inserer(String s);
-	public void moveDot(int dot);
+	public void moveDot(int string);
 	public void delete();
 
 	//V2

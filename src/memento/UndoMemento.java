@@ -1,9 +1,9 @@
 package memento;
 
-import commands.undo_redo.RedoCommand;
+import commands.undo_redo.UndoCommand;
 import undo_redo.Conversation;
 
-public class UndoMemento extends RedoCommand implements CommandMementoable {
+public class UndoMemento extends UndoCommand implements CommandMementoable {
 
 	private Gardian gardian;
 	

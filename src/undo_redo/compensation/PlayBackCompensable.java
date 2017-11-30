@@ -37,11 +37,6 @@ public class PlayBackCompensable extends PlayBackCommand implements CompensableC
 	}
 	
 	private class State {
-		@Override
-		public String toString() {
-			return "State [getBefore()=" + getBefore() + ", getAfter()=" + getAfter() + "]";
-		}
-
 		private String before;
 		private String after;
 		

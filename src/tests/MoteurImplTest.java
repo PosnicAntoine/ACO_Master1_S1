@@ -362,7 +362,7 @@ class MoteurImplTest {
 		assertThrows(java.lang.StringIndexOutOfBoundsException.class, () -> {
 			this.engine.inserer(".");
 		});
-
+ 
 		this.engine.setDot(buf.length() + 1);
 		assertThrows(java.lang.StringIndexOutOfBoundsException.class, () -> {
 			this.engine.inserer(".");

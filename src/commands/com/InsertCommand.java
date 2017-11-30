@@ -23,6 +23,9 @@ public class InsertCommand implements Command {
 
 	@Override
 	public void execute() {
-		this.execute(this.ui.askInsertion());
+		try {
+			this.execute(this.ui.askInsertion());
+		} catch (Exception e) {
+		}
 	}
 }

@@ -33,14 +33,14 @@ public class MoteurImpl extends Observable implements Moteur {
 	@Override
 	public void setBuffer(String buffer) {
 		this.text.replace(0, this.text.length(), buffer);
-
-		// this.setChanged();
-		// this.notifyObservers();
+		this.setDot(0);
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	@Override
 	public void notifyObservers() {
-		this.notifyObservers(this.text + this.caret.toString() + " ; Clipboard [" + this.clipboard + "]");
+		this.notifyObservers(this.text + this.caret.toString() +", <" + this.getSelection() + ">, Clipboard <" + this.clipboard + ">, Bounds [0;"+this.getBuffer().length()+"]");
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class MoteurImpl extends Observable implements Moteur {
 			this.dot = dot;
 			this.mark = dot;
 		}
-		
+		 
 		public void moveDot(int dot) {
 			this.dot = dot;
 		}
