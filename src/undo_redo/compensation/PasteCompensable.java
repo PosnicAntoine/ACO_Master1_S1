@@ -30,7 +30,7 @@ public class PasteCompensable extends PasteMemento implements CompensableCommand
 	@Override
 	public void execute(CompensableCommand.Memento memento) {
 		State state = (PasteCompensable.State) memento.getState();
-		this.m.setDot(state.begin());
+		this.m.setDot(state.begin()).moveDot(state.begin() + state.getSelection().length());;
 		this.m.inserer(state.getClipboard());
 	}
 

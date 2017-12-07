@@ -15,20 +15,9 @@ public class InsertMemento extends InsertCommand implements CommandMementoable {
 	
 	@Override
 	public void execute(String insertion) {
-		super.execute(insertion);
+		super.execute(insertion); 
 		this.gardian.register(new Memento(this, this.insertion));
 	}
-
-//	@Override
-//	public void execute() {
-//		super.execute();
-//		this.gardian.register(new CommandMementoable.Memento(this, this.insertion));
-//	}
-
-//	public void execute(String insertion) {
-//		super.execute(insertion);
-//		this.gardian.register(new CommandMementoable.Memento(this, this.insertion));
-//	}
 	
 	@Override
 	public void play(CommandMementoable.Memento memento) {

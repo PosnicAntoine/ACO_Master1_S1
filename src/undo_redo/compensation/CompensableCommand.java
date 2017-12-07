@@ -13,6 +13,5 @@ public interface CompensableCommand extends Command {
 		protected Memento(CompensableCommand c, Object state) {
 			super(c, state);
 		}
-		
 	}
 }

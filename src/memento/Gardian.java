@@ -11,7 +11,7 @@ public class Gardian {
 	public Gardian() {
 		this.mementos = new LinkedList<CommandMementoable.Memento>();
 	}
-	
+	 
 	public void startRecord() {
 		this.mementos.clear();
 		this.record = true;

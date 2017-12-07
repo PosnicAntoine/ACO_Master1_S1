@@ -10,6 +10,10 @@ import java.util.Observer;
 
 import commands.Command;
 
+/**
+ * @author VinYarD
+ * <p>Une interface permettant d'éditer du texte en saisissant le texte et le nom des commandes à éxecuté dans un InputStream.</p>
+ */
 @SuppressWarnings("deprecation")
 public class IHM implements Invoker, Observer {
 
@@ -18,12 +22,19 @@ public class IHM implements Invoker, Observer {
 	private boolean loop;
 	private BufferedReader reader;
 
+	/**
+	 * Instancie une IHM qui lis les lignes ou entrée de l'inputstream fournis.
+	 * @param is Le stream qui permet de lire le nom des commandes à éxécuter ainsi que les potentiels paramètres des commandes..
+	 */
 	public IHM(InputStream is) {
 		this.hmCommands = new HashMap<String, Command>();
 
 		this.reader = new BufferedReader(new InputStreamReader(is));
 	}
 
+	/**
+	 * Ordonne le démarrage de l'IHM, lecture de l'inputstream jusqu'à l'appel de terminateLoop.
+	 */
 	public void beginLoop() {
 		this.loop = true;
 		try {
@@ -33,10 +44,13 @@ public class IHM implements Invoker, Observer {
 		}
 	}
 
+	/**
+	 * Ordonne la de la lecture de l'inputstream.
+	 */
 	public void terminateLoop() {
 		this.loop = false;
 	}
-	
+	 
 	private String listCmd = "";
 	
 	private void loop() throws IOException {
@@ -52,11 +66,14 @@ public class IHM implements Invoker, Observer {
 			if (c != null) {
 				c.execute();
 			} else {
-				System.err.println("Unknown command");
+				System.err.println("Unknown command\n");
 			}
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see invoker.Invoker#addCommand(java.lang.String, commands.Command)
+	 */
 	@Override
 	public void addCommand(String key, Command cmd) {
 		if (key == null)
@@ -69,11 +86,17 @@ public class IHM implements Invoker, Observer {
 		this.listCmd += (this.listCmd.length() == 0) ? key.toUpperCase() : "/"+key.toUpperCase() ;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println(arg);
 	}
 
+	/* (non-Javadoc)
+	 * @see invoker.Invoker#askInsertion()
+	 */
 	@Override
 	public String askInsertion() {
 		System.out.print("Prompt : ");
@@ -84,6 +107,9 @@ public class IHM implements Invoker, Observer {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see invoker.Invoker#askValue()
+	 */
 	@Override
 	public int askValue() {
 		System.out.print("prompt >");

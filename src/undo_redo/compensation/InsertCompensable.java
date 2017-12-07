@@ -32,7 +32,6 @@ public class InsertCompensable extends InsertMemento implements CompensableComma
 	public void execute(CompensableCommand.Memento memento) {
 		State state = (InsertCompensable.State) memento.getState();
 		this.m.setDot(state.getMark()).moveDot(state.getDot());
-		;
 		this.m.inserer(state.getInsertion());
 	}
 

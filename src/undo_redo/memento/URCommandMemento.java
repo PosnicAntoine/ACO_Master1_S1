@@ -34,5 +34,4 @@ public class URCommandMemento implements URCommandMementoable {
 		String after = this.moteur.getBuffer();
 		this.conversation.register(new URCommandMementoable.Memento(this, new URCommandMementoable.State(before, after)));
 	}
-
 }

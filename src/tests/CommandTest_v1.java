@@ -51,7 +51,7 @@ class CommandTest_v1 {
 	 * @throws java.lang.Exception
 	 */
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() throws Exception { 
 		Invoker inv = new Invoker() {
 
 			@Override

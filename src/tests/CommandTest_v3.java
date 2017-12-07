@@ -3,9 +3,12 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import commands.Command;
 import commands.macro.StartRecordCommand;
 import commands.macro.StopRecordCommand;
 import memento.CopyMemento;
@@ -158,15 +161,17 @@ class CommandTest_v3 {
 	/**
 	 * Test command for {@link undo_redo.compensation.PlayBackCompensable }.
 	 */
-
+	
 	@Test
 	void testPlayBackCompensableCommand() {
 		
-		String buf = "The javadoc command parses the declarations and documentation comments in a set of Java source files and produces a corresponding set of HTML pages that describe (by default) the public and protected classes, nested classes (but not anonymous inner classes), interfaces, constructors, methods, and fields.";
+		String buf = ">1234567890<";
+
+		this.insert.execute(buf);
 		
 		this.start.execute();
 		
-		this.insert.execute(buf);
+		
 		
 		this.selectAll.execute();
 		this.copy.execute();
@@ -182,16 +187,66 @@ class CommandTest_v3 {
 		
 		this.play.execute();
 		
-		
-		assertEquals(this.engine.getBuffer(), buf + buf + buf + buf);
+		assertEquals(this.engine.getBuffer(), buf + buf + buf + buf );
 		
 		this.undo.execute();
 		
 		assertEquals(this.engine.getBuffer(), buf + buf);
 		
-this.undo.execute();
+		this.undo.execute();
 		
-		assertEquals(this.engine.getBuffer(), 0);
+		assertEquals(this.engine.getBuffer(), buf);
 		
+	}
+	
+	@Test
+	void testMultiple() {
+		Command[] tabCommand = new Command[] {
+				this.copy, // not
+				this.delete,
+				this.paste,
+				this.cut,
+				this.selectAll, // not
+				
+				this.selection, // not & askValue
+				this.cursor, // not & askValue
+				this.moveCursor, // not & askValue
+				this.moveSelection, // not & askValue
+				
+				this.insert // askInsertion
+		};
+		
+		int sizeTest = 100000;
+		ArrayList<String> bufferStateList = new ArrayList<String>();
+		bufferStateList.add(this.engine.getBuffer());
+		for(int i = 0; i < sizeTest; i++) {
+			int cmdInd = (int) (Math.random() * tabCommand.length);
+			Command c = tabCommand[cmdInd];
+			if(c instanceof InsertCompensable) {
+				((InsertCompensable) c).execute(String.valueOf((int) (Math.random() * 10000)));
+				bufferStateList.add(this.engine.getBuffer());
+			} else if(c instanceof SelectionMemento) {
+				((SelectionMemento) c).execute((int) (Math.random() * 100 - 50));
+			} else if(c instanceof CursorMemento) {
+				((CursorMemento) c).execute((int) (Math.random() * 100 - 50));
+			} else if(c instanceof MoveCursorMemento) {
+				((MoveCursorMemento) c).execute((int) (Math.random() * 100 - 50));
+			} else if(c instanceof MoveSelectionMemento) {
+				((MoveSelectionMemento) c).execute((int) (Math.random() * 100 - 50));
+			} else {
+				c.execute();
+				if(!(c instanceof CopyMemento) && !(c instanceof SelectAllMemento)) {
+					bufferStateList.add(this.engine.getBuffer());
+				}
+			}
+		}
+		for(int i = bufferStateList.size() - 1; i > 0; i--) {
+			assertEquals(this.engine.getBuffer(), bufferStateList.get(i));
+			this.undo.execute();
+		}
+		for(int i = 0; i < bufferStateList.size() ; i++) {
+			assertEquals(this.engine.getBuffer(), bufferStateList.get(i));
+			this.redo.execute();
+		}
 	}
 }
