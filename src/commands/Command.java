@@ -6,11 +6,13 @@ package commands;
 /**
  * @author VinYarD
  *
- * ACO_TP/receiver/Command.java
- * 9 oct. 2017
+ * <p>Superclass de toute les commandes</p>
+ * <p>interface permettant d'éxecuter une commande</p>
  */
-
 public interface Command {
 
+	/**
+	 * Execute la commande.
+	 */
 	public void execute();
 }

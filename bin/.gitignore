@@ -1,4 +1,7 @@
+/tests/
 /receiver/
-/commands/
 /client/
+/commands/
 /invoker/
+/undo_redo/
+/memento/
